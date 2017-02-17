@@ -1,0 +1,17 @@
+{
+  "name": "pciano",
+  "version": "0.0.0",
+  "scripts": {
+    "webpack:dev": "webpack --config build/webpack.config.js --watch"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.0.4",
+    "typescript": "^2.1.6",
+    "webpack": "2.2"
+  },
+  "dependencies": {
+    "keyboardjs": "^2.3.3",
+    "midi.js": "^0.3.1",
+    "rxjs": "^5.1.1"
+  }
+}
