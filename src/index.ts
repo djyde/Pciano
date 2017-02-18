@@ -87,7 +87,7 @@ function calChord (noteNames: string[]): { [inversion: string]: number[]} {
         !isAddedNote(noteNames[1]) ? ADDED_NOTE_1 : ADD_ADDED_NOTE_1,
         !isAddedNote(noteNames[2]) ? ORIGIN_NOTE_2 : ADDED_NOTE_2
       ],
-      '-1': [
+      '-2': [
         ORIGIN_NOTE_0,
         !isAddedNote(noteNames[1]) ? ORIGIN_NOTE_1 : ADDED_NOTE_1,
         !isAddedNote(noteNames[2]) ? SUB_NOTE_2 : ORIGIN_NOTE_0,
@@ -95,7 +95,19 @@ function calChord (noteNames: string[]): { [inversion: string]: number[]} {
     }
   } else if (noteNames.length === 4) {
     // Seventh chords
-
+    const ORIGIN_NOTE_3 = generatedNoteMap[noteNames[3].replace('+', '')]
+    const SUB_NOTE_3 = generatedSubNoteMap[noteNames[3].replace('+', '')]
+    
+    
+    return {
+      '0': [ORIGIN_NOTE_0, ORIGIN_NOTE_1, ORIGIN_NOTE_2, ORIGIN_NOTE_3],
+      '-1': [
+        ORIGIN_NOTE_0,
+        !isAddedNote(noteNames[1]) ? SUB_NOTE_1 : ORIGIN_NOTE_1,
+        !isAddedNote(noteNames[2]) ? SUB_NOTE_2 : ORIGIN_NOTE_2,
+        !isAddedNote(noteNames[3]) ? SUB_NOTE_3 : ORIGIN_NOTE_3,
+      ]
+    }
     // return {
     //   '0': [generatedNoteMap[noteNames[0]], generatedNoteMap[noteNames[1]], generatedNoteMap[noteNames[2]], generatedNoteMap[noteNames[3]]
     // }
@@ -121,6 +133,8 @@ function onsuccess () {
   const C = calChord(['C', 'E', 'G'])
   const Am = calChord(['A', '+C', '+E'])
   const Em = calChord(['E', 'G', 'B'])
+  const F = calChord(['F', 'A', '+C'])
+  const Am7 = calChord(['A', 'C', 'E', 'G'])
   keyboardJS.bind('c', () => {
     // play C major chord - origin inversion
     playNote(C['0'])
@@ -137,7 +151,7 @@ function onsuccess () {
   })
 
   keyboardJS.bind('c + space', () => {
-    playNote(C['-1'])
+    playNote(C['-2'])
   })
 
   keyboardJS.bind('a', () => {
@@ -153,7 +167,15 @@ function onsuccess () {
   })
 
   keyboardJS.bind('a + space', () => {
-    playNote(Am['-1'])
+    playNote(Am['-2'])
+  })
+
+  keyboardJS.bind('a + 7', () => {
+    playNote(Am7['0'])
+  })
+
+  keyboardJS.bind('a + 7 + shift', () => {
+    playNote(Am7['-1'])
   })
 
   keyboardJS.bind('e', () => {
@@ -169,6 +191,10 @@ function onsuccess () {
   })
 
   keyboardJS.bind('e + space', () => {
-    playNote(Em['-1'])
+    playNote(Em['-2'])
+  })
+
+  keyboardJS.bind('f', () => {
+    playNote(F['0'])
   })
 }
