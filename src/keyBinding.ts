@@ -2,20 +2,23 @@ import * as keyboardJS from 'keyboardjs'
 import * as MIDI from 'midi.js'
 import * as Vue from 'vue'
 
-import { calChord, calNoteMap } from './utils'
+import { calChord, calNoteMap, calBrokenChord } from './utils'
 
 export const DELAY = 0
 export const VELOCITY = 127
 export const CHANNEL = 0
+export const AUTO_CLICK_BASE = true
+export const LEFT_HAND_VELOCITY = VELOCITY / 5
 
-export const app = new Vue({
+window.app = new Vue({
   el: '#app',
   data: {
-    onPressNoteIds: []
+    currentChord: [],
+    currentNote: ''
   },
   methods: {
     isPressing (noteId) {
-      return this.onPressNoteIds.indexOf(noteId) !== -1
+      return this.currentChord.indexOf(noteId) !== -1 || this.currentNote === noteId
     },
     calWhiteNoteId(n: number, octave: number) {
       switch (n) {
@@ -33,24 +36,27 @@ export const app = new Vue({
 })
 
 // play a note or a chord(an array of note)
-function playNote(note: number)
-function playNote(note: number[])
-function playNote(note: any): void {
+function playNote(note: number, velocity?)
+function playNote(note: number[], velocity?)
+function playNote(note: any, velocity?: number = VELOCITY): void {
   console.log(note)
   if (Array.isArray(note)) {
     // play chord
-    app.onPressNoteIds = note
-    note.forEach(note => {
-      MIDI.noteOn(CHANNEL, note, VELOCITY, DELAY)
-    })
+    app.currentChord = note
+    MIDI.chordOn(CHANNEL, note, velocity, DELAY)
+    if (AUTO_CLICK_BASE) {
+      MIDI.noteOn(CHANNEL, note[0] - 2 * 12, LEFT_HAND_VELOCITY, DELAY)
+      app.currentNote = note[0] - 2 * 12
+    }
   } else {
-    app.onPressNoteIds = [].concat(note)
-    MIDI.noteOn(CHANNEL, note, VELOCITY, DELAY)
+    app.currentNote = note
+    MIDI.noteOn(CHANNEL, note, velocity, DELAY)
   }
 }
 
 export function onsuccess() {
   const C = calChord(['C', 'E', 'G'])
+  const Dm = calChord(['D', 'F', 'A'])
   const Am = calChord(['A', '+C', '+E'])
   const Em = calChord(['E', 'G', 'B'])
   const F = calChord(['F', 'A', '+C'])
@@ -59,6 +65,7 @@ export function onsuccess() {
   keyboardJS.bind('c', () => {
     // play C major chord - origin inversion
     playNote(C['0'])
+  }, () => {
   })
 
   keyboardJS.bind('c + ctrl', () => {
@@ -97,6 +104,22 @@ export function onsuccess() {
 
   keyboardJS.bind('a + 7 + shift', () => {
     playNote(Am7['-1'])
+  })
+
+  keyboardJS.bind('d', () => {
+    playNote(Dm['0'])
+  })
+
+  keyboardJS.bind('d + ctrl', () => {
+    playNote(Dm['1'])
+  })
+
+  keyboardJS.bind('d + shift', () => {
+    playNote(Dm['2'])
+  })
+
+  keyboardJS.bind('d + space', () => {
+    playNote(Dm['-2'])
   })
 
   keyboardJS.bind('e', () => {
@@ -145,5 +168,30 @@ export function onsuccess() {
 
   keyboardJS.bind('g + space', () => {
     playNote(G['-2'])
+  })
+
+  // borken chord
+  keyboardJS.bind('y', () => {
+    playNote(calBrokenChord()[1])
+  })
+
+  keyboardJS.bind('u', () => {
+    playNote(calBrokenChord()[1])
+  })
+
+  keyboardJS.bind('i', () => {
+    playNote(calBrokenChord()[2])
+  })
+
+  keyboardJS.bind('o', () => {
+    playNote(calBrokenChord()[3])
+  })
+
+  keyboardJS.bind('p', () => {
+    playNote(calBrokenChord()[5])
+  })
+
+  keyboardJS.bind('h', () => {
+    playNote(calBrokenChord()[8])
   })
 }

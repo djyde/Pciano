@@ -1,3 +1,5 @@
+import { app } from './keyBinding'
+
 export const C1_NOTE_ID = 36
 export const OCTAVE = 3
 
@@ -86,7 +88,6 @@ export function calChord(noteNames: string[]): { [inversion: string]: number[] }
     const ORIGIN_NOTE_3 = generatedNoteMap[noteNames[3].replace('+', '')]
     const SUB_NOTE_3 = generatedSubNoteMap[noteNames[3].replace('+', '')]
 
-
     return {
       '0': [ORIGIN_NOTE_0, ORIGIN_NOTE_1, ORIGIN_NOTE_2, ORIGIN_NOTE_3],
       '-1': [
@@ -100,4 +101,18 @@ export function calChord(noteNames: string[]): { [inversion: string]: number[] }
     //   '0': [generatedNoteMap[noteNames[0]], generatedNoteMap[noteNames[1]], generatedNoteMap[noteNames[2]], generatedNoteMap[noteNames[3]]
     // }
   }
+}
+
+// calculate broken chord
+export function calBrokenChord (notes: number[] = window.app.currentChord) {
+  const baseNote = notes[0]
+  const fiveNote = notes[2]
+  const brokenBaseNote = baseNote - 2 * 12 + 1
+  const broken = []
+
+  broken[1] = baseNote - 2 * 12
+  broken[5] = fiveNote - 2 * 12 < broken[1] ? fiveNote - 1 * 12 : fiveNote - 2 * 12
+  broken[8] = baseNote - 1 * 12
+
+  return broken
 }
