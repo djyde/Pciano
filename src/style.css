@@ -1,0 +1,36 @@
+body {
+  background-color: #ddd;
+}
+
+.piano {
+  overflow-x: auto;
+  white-space: nowrap;
+  .key {
+    position: relative;
+    display: inline-block;
+    font-size: 8px;
+    
+    .on-press {
+      background-color: red !important;
+    }
+
+    .white-key {
+      width: 24px;
+      height: 80px;
+      background-color: white;
+      border-left: 1px solid gray;
+      border-top: 1px solid gray;      
+      border-bottom: 1px solid gray;      
+    }
+
+    .black-key {
+      position: absolute;
+      z-index: 9;
+      top: 0;
+      left: 18px;
+      width: 16px;
+      height: 48px;
+      background-color: black;
+    }
+  }
+}

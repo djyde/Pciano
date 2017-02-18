@@ -11,10 +11,30 @@ module.exports = {
       {
         test: /\.tsx?$/,
         loader: 'awesome-typescript-loader'
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', {
+          loader: 'postcss-loader',
+          options: {
+            plugins: function () {
+              return [
+                require('postcss-nested'),
+                require('autoprefixer')
+              ]
+            }
+          }
+        }]
       }
     ]
   },
   plugins: [
     new CheckerPlugin()
-  ]
+  ],
+  resolve: {
+    extensions: ['.ts', '.js'],
+    alias: {
+      'vue$': 'vue/dist/vue.common.js'
+    }
+  }
 }

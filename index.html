@@ -1,8 +1,21 @@
 <html>
-  <head>
-    <title>Pciano</title>
-  </head>
-  <body>
-    <script src="lib/index.js"></script>
-  </body>
+
+<head>
+  <title>Pciano</title>
+</head>
+
+<body>
+  <div id="app">
+    <div class="piano">
+      <div v-for="j in 6" style="display: inline-block;">
+        <div class="key" v-for="n in 7">
+          <div class="white-key" :data-note-id="calWhiteNoteId(n - 1, j)" :class="{ 'on-press': isPressing(calWhiteNoteId(n - 1, j)) }"></div>
+          <div v-if="n !== 3 && n !== 7" class="black-key" :data-note-id="calWhiteNoteId(n - 1, j) + 1" :class="{ 'on-press': isPressing(calWhiteNoteId(n - 1, j) + 1) }"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="lib/index.js"></script>
+</body>
+
 </html>
