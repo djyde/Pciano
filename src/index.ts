@@ -5,6 +5,6 @@ import { onsuccess } from './keyBinding'
 
 MIDI.loadPlugin({
   instrument: 'acoustic_grand_piano',
-  soundfontUrl: '/static/soundfont/',
+  soundfontUrl: 'static/soundfont/',
   onsuccess
 })
