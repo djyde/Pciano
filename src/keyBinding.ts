@@ -9,6 +9,9 @@ export const VELOCITY = 127
 export const CHANNEL = 0
 export const AUTO_CLICK_BASE = true
 export const LEFT_HAND_VELOCITY = VELOCITY / 5
+export const MIDDLE_C_NOTE = 60
+
+export const NOTE_MODE = true
 
 window.app = new Vue({
   el: '#app',
@@ -194,4 +197,48 @@ export function onsuccess() {
   keyboardJS.bind('h', () => {
     playNote(calBrokenChord()[8])
   })
+
+  // bind 1-9
+  for(let i = 1; i < 13; i++) {
+    keyboardJS.bind(`${i}`, () => {
+      switch (i) {
+        case 1:
+          playNote(MIDDLE_C_NOTE)
+          break
+        case 3:
+        case 4:
+          playNote(MIDDLE_C_NOTE + i + 1)
+          break
+        case 5:
+          playNote(MIDDLE_C_NOTE + i + 2)
+          break
+        case 6:
+          playNote(MIDDLE_C_NOTE + i + 3)
+          break
+        case 7:
+          playNote(MIDDLE_C_NOTE + i + 4)
+          break
+        case 8:
+          playNote(MIDDLE_C_NOTE + i + 4)
+          break
+        case 9:
+          playNote(MIDDLE_C_NOTE + i + 5)
+          break
+        default:
+          playNote(MIDDLE_C_NOTE + i)
+      }
+    })
+
+    keyboardJS.bind('0', () => {
+      playNote(MIDDLE_C_NOTE + 16)
+    })
+
+    keyboardJS.bind('-', () => {
+      playNote(MIDDLE_C_NOTE + 17)
+    })
+
+    keyboardJS.bind('=', () => {
+      playNote(MIDDLE_C_NOTE + 19)
+    })
+  }
 }
