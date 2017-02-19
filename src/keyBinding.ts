@@ -198,6 +198,10 @@ export function onsuccess() {
     playNote(calBrokenChord()[8])
   })
 
+  keyboardJS.bind('j', () => {
+    playNote(calBrokenChord()[10])
+  })
+
   // bind 1-9
   for(let i = 1; i < 13; i++) {
     keyboardJS.bind(`${i}`, () => {

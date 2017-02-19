@@ -106,6 +106,7 @@ export function calChord(noteNames: string[]): { [inversion: string]: number[] }
 // calculate broken chord
 export function calBrokenChord (notes: number[] = window.app.currentChord) {
   const baseNote = notes[0]
+  const threeNote = notes[1]
   const fiveNote = notes[2]
   const brokenBaseNote = baseNote - 2 * 12 + 1
   const broken = []
@@ -113,6 +114,7 @@ export function calBrokenChord (notes: number[] = window.app.currentChord) {
   broken[1] = baseNote - 2 * 12
   broken[5] = fiveNote - 2 * 12 < broken[1] ? fiveNote - 1 * 12 : fiveNote - 2 * 12
   broken[8] = baseNote - 1 * 12
+  broken[10] = threeNote - 1 * 12
 
   return broken
 }
